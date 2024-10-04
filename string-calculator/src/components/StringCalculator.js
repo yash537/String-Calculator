@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+import { useCalculator } from "../hooks/useStringCalculator";
 
 const StringCalculator = () => {
-  const [input, setInput] = useState("");
-  const [result, setResult] = useState(null);
-
-  const handleCalculate = () => {
-    const numArray = input.split(",").map(Number);
-    const sum = numArray.reduce((sum, num) => sum + num, 0);
-    setResult(sum);
-  };
+  const { input, result, error, handleInputChange, handleCalculate } =
+    useCalculator();
 
   return (
     <div>
@@ -16,11 +11,12 @@ const StringCalculator = () => {
       <input
         type="text"
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={handleInputChange}
         placeholder="Enter numbers"
       />
       <button onClick={handleCalculate}>Calculate</button>
-      {result && `your String calculation is ${result}`}
+      {result && <span>your String calculation is {result}</span>}
+      {error && <span style={{ color: "red" }}>{error}</span>}
     </div>
   );
 };
