@@ -3,15 +3,19 @@ export function add(number) {
 
   number = number.replace(/\\n/g, "\n");
 
-  let delimiter = /,|\n/;
+  let delimiter = /,|\n|;/;
+
+  const customDelimiterMatch = number.match(/^\/\/(.+?)\n/);
+  if (customDelimiterMatch) {
+    delimiter = new RegExp(customDelimiterMatch[1]);
+    number = number.slice(customDelimiterMatch[0].length);
+  }
 
   const numArray = number
     .split(delimiter)
     .map((n) => n.trim())
     .filter((n) => n !== "")
     .map(Number);
-
-  console.log("Number array after split and conversion:", numArray);
 
   let negatives = numArray.filter((n) => n < 0);
   if (negatives.length) {
