@@ -1,14 +1,22 @@
 export function add(number) {
-  if (number === "") {
-    return 0;
-  }
+  if (number === "") return 0;
 
-  const numArray = number.split(",").map(Number);
+  number = number.replace(/\\n/g, "\n");
+
+  let delimiter = /,|\n/;
+
+  const numArray = number
+    .split(delimiter)
+    .map((n) => n.trim())
+    .filter((n) => n !== "")
+    .map(Number);
+
+  console.log("Number array after split and conversion:", numArray);
+
   let negatives = numArray.filter((n) => n < 0);
   if (negatives.length) {
     throw new Error(`Negative numbers not allowed: ${negatives.join(", ")}`);
-  } else {
-    const sum = numArray.reduce((sum, num) => sum + num, 0);
-    return sum;
   }
+
+  return numArray.reduce((sum, num) => sum + num, 0);
 }
